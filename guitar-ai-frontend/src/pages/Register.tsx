@@ -1,29 +1,39 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import type { Variants } from 'framer-motion';
+import { useAppDispatch } from '../store/hook';
+import { register as registerUser } from "../store/reducers/authReducer";
 
-const sentenceVariants: Variants = {
-  initial: { opacity: 1 },
-  animate: {
-    opacity: 1,
-    transition: { staggerChildren: 0.05, delayChildren: 0.1 }
-  }
-};
-
-const letterVariants: Variants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0, transition: { type: "spring", damping: 10, stiffness: 200 } }
+type RegisterFormData = {
+  name: string;
+  email: string;
+  password: string;
 };
 
 export default function Register() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<RegisterFormData>();
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data: any) => {
-    console.log('Register attempt', data);
-    // TODO: wire up with backend
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const onSubmit = async (data: RegisterFormData) => {
+    try {
+      const resultAction = await dispatch(registerUser(data));
+
+      if (registerUser.fulfilled.match(resultAction)) {
+        navigate("/login");
+      } else {
+        console.error(resultAction.payload);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

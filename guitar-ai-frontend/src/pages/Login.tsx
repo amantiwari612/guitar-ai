@@ -1,29 +1,34 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import type { Variants } from 'framer-motion';
+import { useAppDispatch } from '../store/hook';
+import { login } from '../store/reducers/authReducer';
 
-const sentenceVariants: Variants = {
-  initial: { opacity: 1 },
-  animate: {
-    opacity: 1,
-    transition: { staggerChildren: 0.05, delayChildren: 0.1 }
-  }
-};
-
-const letterVariants: Variants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0, transition: { type: "spring", damping: 10, stiffness: 200 } }
-};
 
 export default function Login() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data: any) => {
-    console.log('Login attempt', data);
-    // TODO: wire up with backend login
+  const onSubmit = async (data: any) => {
+    try {
+      const resultAction = await dispatch(login(data));
+
+      console.log("LOGIN RESULT:", resultAction);
+
+      if (login.fulfilled.match(resultAction)) {
+        // ✅ success
+        navigate("/dashboard");
+      } else {
+        // ❌ error from backend
+        console.error("Login failed:", resultAction.payload);
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
   };
 
   return (
