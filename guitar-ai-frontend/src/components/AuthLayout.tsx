@@ -1,6 +1,7 @@
-import { useOutlet, useLocation } from 'react-router-dom';
+import { Link, useOutlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
+import { FiHome } from 'react-icons/fi';
 
 const floatingNotes = ["🎵", "🎶", "𝄞", "♩", "♪", "♫", "♬"];
 
@@ -129,6 +130,17 @@ export default function AuthLayout() {
 
       {/* Right Form Panel */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 lg:p-8 relative selection:bg-purple-500/30 overflow-hidden lg:overflow-visible" style={{ perspective: '1200px' }}>
+
+        {/* Floating Back to Home Button */}
+        <Link
+          to="/"
+          className="absolute top-6 right-6 lg:top-8 lg:right-8 z-50 flex flex-col items-center justify-center gap-1 w-16 h-16 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 text-gray-400 hover:text-white transition-all shadow-[0_0_15px_rgba(0,0,0,0.3)] hover:shadow-[0_0_20px_rgba(168,85,247,0.3)]"
+          title="Back to Home"
+        >
+          <FiHome className="w-5 h-5" />
+          <span className="text-[10px] font-medium tracking-wide uppercase mt-0.5">Home</span>
+        </Link>
+
         {/* Mobile Background Layer */}
         <div
           className="absolute inset-0 z-0 bg-cover bg-center lg:hidden"

@@ -16,14 +16,14 @@ interface AuthState {
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
-  loading: false,
+  loading: true,
   error: null,
 };
 
 export const fetchUser = createAsyncThunk("auth/fetchUser", async (_, thunkAPI) => {
   try {
     const res = await getCurrentUser();
-    return res.data.data.user;
+    return res.data.data;
   } catch (err: any) {
     return thunkAPI.rejectWithValue(err.response?.data?.message);
   }

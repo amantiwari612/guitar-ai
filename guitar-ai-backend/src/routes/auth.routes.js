@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login, logout, refreshAccessToken } from "../controllers/authController.js";
+import { register, login, logout, refreshAccessToken, getCurrentUser } from "../controllers/authController.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
@@ -13,12 +13,6 @@ router.post("/refresh-token", refreshAccessToken);
 router.post("/logout", authMiddleware, logout);
 
 // to test the auth middleware
-router.get("/me", authMiddleware, (req, res) => {
-    res.json({
-        success: true,
-        user: req.user,
-    });
-});
-
+router.get("/me", authMiddleware, getCurrentUser);
 
 export default router;

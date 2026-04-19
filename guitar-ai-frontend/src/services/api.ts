@@ -36,7 +36,6 @@ API.interceptors.response.use(
             !originalRequest.url?.includes("/auth/login") &&
             !originalRequest.url?.includes("/auth/register")
         ) {
-            originalRequest._retry = true;
 
             if (isRefreshing) {
                 return new Promise((resolve, reject) => {
@@ -46,6 +45,7 @@ API.interceptors.response.use(
                     });
                 }).then(() => API(originalRequest));
             }
+            originalRequest._retry = true;
             isRefreshing = true;
 
             try {
