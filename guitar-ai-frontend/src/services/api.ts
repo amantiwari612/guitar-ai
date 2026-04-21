@@ -34,7 +34,8 @@ API.interceptors.response.use(
             error.response.status === 401 &&
             !originalRequest._retry &&
             !originalRequest.url?.includes("/auth/login") &&
-            !originalRequest.url?.includes("/auth/register")
+            !originalRequest.url?.includes("/auth/register") &&
+            !originalRequest.url?.includes("/auth/refresh-token")
         ) {
 
             if (isRefreshing) {
@@ -58,8 +59,6 @@ API.interceptors.response.use(
             } catch (err) {
                 processQueue(err, false);
                 isRefreshing = false;
-
-                window.location.href = "/login";
 
                 return Promise.reject(err);
             }
