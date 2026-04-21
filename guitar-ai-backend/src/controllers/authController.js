@@ -3,7 +3,7 @@ import User from "../models/user.model.js";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import ApiError from "../utils/apiError.js";
-
+import jwt from "jsonwebtoken";
 import { accessTokenOptions, refreshTokenOptions } from "../utils/cookieOptions.js";
 import ApiResponse from "../utils/apiResponse.js";
 
