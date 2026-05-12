@@ -1,10 +1,9 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
+import videoRoutes from "./routes/video.routes.js";
 import cookieParser from "cookie-parser";
 import dns from "dns";
-import dotenv from "dotenv";
-dotenv.config();
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
@@ -46,6 +45,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/video", videoRoutes);
 
 app.get("/", (req, res) => {
   res.send("API Running 🚀");
