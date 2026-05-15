@@ -1,34 +1,15 @@
-import { useEffect, useState } from 'react';
-import api from '../lib/axios';
-
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  role: string;
-  createdAt: string;
-}
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { type AppDispatch, type RootState } from '../store';
+import { getAllUsers } from '../store/slices/userSlice';
 
 const Users = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
+  const dispatch = useDispatch<AppDispatch>();
+  const { users, isLoading, error } = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await api.get('/auth/users');
-        setUsers(response.data.data || []);
-      } catch (err) {
-        const error = err as any;
-        setError(error.response?.data?.message || 'Failed to fetch users');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUsers();
-  }, []);
+    dispatch(getAllUsers());
+  }, [dispatch]);
 
   return (
     <div className="space-y-6">

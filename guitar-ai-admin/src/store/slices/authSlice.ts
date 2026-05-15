@@ -29,9 +29,9 @@ export const login = createAsyncThunk(
   "auth/login",
   async (data: any, thunkAPI) => {
     try {
-      console.log("LOGIN API CALL START", data);
+
       const res = await api.post('/auth/login', data);
-      console.log(res)
+
       const user = res.data.data.user;
 
       if (user.role !== 'admin') {
@@ -57,10 +57,7 @@ export const fetchCurrentUser = createAsyncThunk(
       if (localStorage.getItem('isAdminLoggedIn') !== 'true') {
         return rejectWithValue('Not logged in');
       }
-
-      console.log("CURRENT USER API CALL START");
       const response = await api.get('/auth/me');
-      console.log("CURRENT USER API CALL SUCCESS", response.data);
 
       if (response.data.data.role !== 'admin') {
         localStorage.removeItem('isAdminLoggedIn');

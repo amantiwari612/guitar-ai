@@ -17,7 +17,13 @@ const uploadVideo = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All files are required")
   }
 
+  const thumbnailFileLocalPath = req.files?.thumbnail?.[0]?.path;
+  if (!thumbnailFileLocalPath) {
+    throw new ApiError(400, "Thumbnail is required")
+  }
+
   const videoFile = await uploadOnCloudinary(videoFileLocalPath);
+  const thumbnailFile = await uploadOnCloudinary(thumbnailFileLocalPath);
 
   if (!videoFile) {
     throw new ApiError(400, "Video upload failed")
@@ -25,6 +31,7 @@ const uploadVideo = asyncHandler(async (req, res) => {
 
   const video = new Video({
     videoFile: videoFile.url,
+    thumbnail: thumbnailFile.url,
     title,
     description,
     duration: videoFile.duration,

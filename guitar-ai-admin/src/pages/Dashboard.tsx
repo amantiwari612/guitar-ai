@@ -1,32 +1,21 @@
-import { useEffect, useState } from 'react';
-import api from '../lib/axios';
+import { useEffect } from 'react';
 import { MdPeople, MdVideoLibrary } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { type AppDispatch, type RootState } from '../store';
+import { getAllUsers } from '../store/slices/userSlice';
+import { getAllVideos } from '../store/slices/videoSlice';
 
 const Dashboard = () => {
-  const [stats, setStats] = useState({ users: 0, videos: 0 });
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch<AppDispatch>();
+  const { users, isLoading: isLoadingUsers } = useSelector((state: RootState) => state.users);
+  const { videos, isLoading: isLoadingVideos } = useSelector((state: RootState) => state.videos);
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const [usersRes, videosRes] = await Promise.all([
-          api.get('/auth/users'),
-          api.get('/videos')
-        ]);
-        
-        setStats({
-          users: usersRes.data.data.length || 0,
-          videos: videosRes.data.data.length || 0,
-        });
-      } catch (error) {
-        console.error('Failed to fetch stats', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    dispatch(getAllUsers());
+    dispatch(getAllVideos());
+  }, [dispatch]);
 
-    fetchStats();
-  }, []);
+  const isLoading = isLoadingUsers || isLoadingVideos;
 
   return (
     <div className="space-y-6">
@@ -44,7 +33,7 @@ const Dashboard = () => {
           <div>
             <p className="text-sm font-medium text-gray-500">Total Users</p>
             <p className="text-2xl font-bold text-gray-900">
-              {isLoading ? '...' : stats.users}
+              {isLoading ? '...' : users?.length}
             </p>
           </div>
         </div>
@@ -57,7 +46,7 @@ const Dashboard = () => {
           <div>
             <p className="text-sm font-medium text-gray-500">Total Videos</p>
             <p className="text-2xl font-bold text-gray-900">
-              {isLoading ? '...' : stats.videos}
+              {isLoading ? '...' : videos?.totalVideos}
             </p>
           </div>
         </div>
