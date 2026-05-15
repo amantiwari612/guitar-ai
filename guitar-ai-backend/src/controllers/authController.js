@@ -10,7 +10,7 @@ import ApiResponse from "../utils/apiResponse.js";
 // Reigster
 
 export const register = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   if (!name || !email || !password) {
     throw new ApiError(400, "All fields are required");
@@ -26,6 +26,7 @@ export const register = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    role
   });
 
   const accessToken = generateAccessToken(user);
@@ -70,6 +71,7 @@ export const login = asyncHandler(async (req, res) => {
     id: user._id,
     name: user.name,
     email: user.email,
+    role: user.role,
   };
 
   return res
@@ -128,6 +130,16 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
     );
 });
 
+export const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find().select("-password -refreshToken");
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      users,
+      "All users fetched successfully"
+    )
+  );
+})
 export const getCurrentUser = asyncHandler(async (req, res) => {
   return res.status(200).json(
     new ApiResponse(
