@@ -40,39 +40,6 @@ export const fetchVideos = createAsyncThunk(
   }
 );
 
-// ==============================
-// ⬆️ UPLOAD VIDEO
-// ==============================
-export const addVideo = createAsyncThunk(
-  "video/addVideo",
-  async (data: FormData, thunkAPI) => {
-    try {
-      const res = await uploadVideo(data);
-      return res.data.data; // assuming ApiResponse(200, video, ...) returns data in `data.data`
-    } catch (err: any) {
-      return thunkAPI.rejectWithValue(
-        err.response?.data?.message || "Failed to upload video"
-      );
-    }
-  }
-);
-
-// ==============================
-// 🗑️ DELETE VIDEO
-// ==============================
-export const removeVideo = createAsyncThunk(
-  "video/removeVideo",
-  async (videoId: string, thunkAPI) => {
-    try {
-      await deleteVideo(videoId);
-      return videoId; // Return the ID to filter it out from the state
-    } catch (err: any) {
-      return thunkAPI.rejectWithValue(
-        err.response?.data?.message || "Failed to delete video"
-      );
-    }
-  }
-);
 
 // ==============================
 // 🧠 SLICE
@@ -102,42 +69,6 @@ const videoSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-
-      // =========================
-      // UPLOAD VIDEO
-      // =========================
-      .addCase(addVideo.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(addVideo.fulfilled, (state, action) => {
-        state.loading = false;
-        // Optionally prepend the newly uploaded video to the top of the list
-        state.videos.unshift(action.payload);
-        state.totalVideos += 1;
-      })
-      .addCase(addVideo.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-
-      // =========================
-      // DELETE VIDEO
-      // =========================
-      .addCase(removeVideo.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(removeVideo.fulfilled, (state, action) => {
-        state.loading = false;
-        // Filter out the deleted video by its ID
-        state.videos = state.videos.filter((v) => v._id !== action.payload);
-        state.totalVideos = Math.max(0, state.totalVideos - 1);
-      })
-      .addCase(removeVideo.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
   },
 });
 

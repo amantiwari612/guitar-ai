@@ -1,12 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdDelete } from 'react-icons/md';
 import { type AppDispatch, type RootState } from '../store';
 import { getAllVideos, deleteVideo } from '../store/slices/videoSlice';
+import { FiPlus } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import UploadVideoModal from '../components/UploadVideoModal';
 
 const Videos = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { videos, isLoading, error } = useSelector((state: RootState) => state.videos);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(getAllVideos());
@@ -23,6 +27,15 @@ const Videos = () => {
         <h1 className="text-2xl font-bold text-gray-900">Videos Management</h1>
         <p className="text-gray-500 text-sm mt-1">Manage platform video lessons.</p>
       </div>
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setIsUploadModalOpen(true)}
+        className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-5 py-2.5 rounded-xl font-medium shadow-lg shadow-purple-500/20 transition-all whitespace-nowrap self-start sm:self-auto"
+      >
+        <FiPlus size={18} />
+        <span>Upload Lesson</span>
+      </motion.button>
 
       {error && (
         <div className="bg-red-50 text-red-600 p-4 rounded-lg border border-red-100">
@@ -70,6 +83,11 @@ const Videos = () => {
           ))}
         </div>
       )}
+
+      <UploadVideoModal 
+        isOpen={isUploadModalOpen} 
+        onClose={() => setIsUploadModalOpen(false)} 
+      />
     </div>
   );
 };
