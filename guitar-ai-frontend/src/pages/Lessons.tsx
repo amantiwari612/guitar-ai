@@ -5,7 +5,6 @@ import { fetchVideos } from "../store/reducers/videoReducer";
 import { motion } from "framer-motion";
 import { FiPlus } from "react-icons/fi";
 import VideoCard, { type Video } from "../components/VideoCard";
-import UploadVideoModal from "../components/UploadVideoModal";
 import VideoPlayerModal from "../components/VideoPlayerModal";
 
 export default function Lessons() {
@@ -33,15 +32,6 @@ export default function Lessons() {
           </p>
         </div>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setIsUploadModalOpen(true)}
-          className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-5 py-2.5 rounded-xl font-medium shadow-lg shadow-purple-500/20 transition-all whitespace-nowrap self-start sm:self-auto"
-        >
-          <FiPlus size={18} />
-          <span>Upload Lesson</span>
-        </motion.button>
       </div>
 
       {/* Content Section */}
@@ -83,20 +73,9 @@ export default function Lessons() {
           <p className="text-gray-400 text-sm mb-6 text-center max-w-sm">
             There are currently no video lessons available. Be the first to upload one!
           </p>
-          <button
-            onClick={() => setIsUploadModalOpen(true)}
-            className="text-purple-400 hover:text-purple-300 font-medium text-sm transition-colors"
-          >
-            Upload your first video
-          </button>
         </div>
       )}
 
-      {/* Upload Modal */}
-      <UploadVideoModal
-        isOpen={isUploadModalOpen}
-        onClose={() => setIsUploadModalOpen(false)}
-      />
 
       {/* Media Player Modal */}
       <VideoPlayerModal
