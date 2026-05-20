@@ -11,6 +11,7 @@ import PrivateRoute from './components/PrivateLayout';
 import Practice from './pages/Practice';
 import Tuner from './pages/Tunner';
 import Lessons from './pages/Lessons';
+import MoodSwing from './pages/MoodSwing';
 import './App.css';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route path="/practice" element={<Practice />} />
             <Route path="/tuner" element={<Tuner />} />
             <Route path="/lessons" element={<Lessons />} />
+            <Route path="/mood-swing" element={<MoodSwing />} />
           </Route>
         </Route>
 

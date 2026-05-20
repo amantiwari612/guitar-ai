@@ -29,6 +29,9 @@ export default function MainHeader() {
       <Link to="/lessons" className={navLinkClass("/lessons")}>
         Lessons
       </Link>
+      <Link to="/mood-swing" className={navLinkClass("/mood-swing")}>
+        Mood Swing
+      </Link>
 
       {isAuthenticated && (
         <button
