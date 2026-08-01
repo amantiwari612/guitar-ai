@@ -16,6 +16,4 @@ router.post("/logout", authMiddleware, logout);
 // to test the auth middleware
 router.get("/me", authMiddleware, getCurrentUser);
 
-router.get("/users", authMiddleware, adminMiddleware, getAllUsers);
-
 export default router;

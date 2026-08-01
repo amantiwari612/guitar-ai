@@ -30,8 +30,8 @@ const uploadVideo = asyncHandler(async (req, res) => {
   }
 
   const video = new Video({
-    videoFile: videoFile.url,
-    thumbnail: thumbnailFile.url,
+    videoFile: videoFile.secure.url || videoFile.url,
+    thumbnail: thumbnailFile.secure.url || thumbnailFile.url,
     title,
     description,
     duration: videoFile.duration,
@@ -103,6 +103,8 @@ const getAllVideos = asyncHandler(async (req, res) => {
           createdAt: 1,
           duration: 1,
           owner: 1,
+          videoFile: 1,
+          thumbnail: 1,
         },
       },
     ]);

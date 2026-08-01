@@ -30,6 +30,11 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
 
+    isRestricted: {
+      type: Boolean,
+      default: false,
+    },
+
     accessToken: {
       type: String,
       default: "",

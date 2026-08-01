@@ -11,7 +11,7 @@ const Videos = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { videos, isLoading, error } = useSelector((state: RootState) => state.videos);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-
+  console.log(videos)
   useEffect(() => {
     dispatch(getAllVideos());
   }, [dispatch]);
@@ -84,9 +84,9 @@ const Videos = () => {
         </div>
       )}
 
-      <UploadVideoModal 
-        isOpen={isUploadModalOpen} 
-        onClose={() => setIsUploadModalOpen(false)} 
+      <UploadVideoModal
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
       />
     </div>
   );
